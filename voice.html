@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Speech to text converter</title>
+  </head>
+  <body>
+    <h3 align="center">Speech to text converter</h3>
+    <div id="output"></div>
+    <button id="startBtn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="black" class="mic" viewBox="0 0 228 326">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M64 50C64 22.3858 86.3857 0 114 0C141.614 0 164 22.3858 164 50V162C164 189.614 141.614 212 114 212C86.3857 212 64 189.614 64 162V50ZM0 163C0 193.5 12.0107 222.751 33.3898 244.317C50.7205 261.8 73.0565 273.072 97 276.715V326H131V276.715C154.944 273.072 177.28 261.8 194.61 244.317C215.989 222.751 228 193.5 228 163H194.61C194.61 184.749 185.245 204.621 170 220C154.755 235.379 135.06 243.5 113.5 243.5C91.94 243.5 71.7452 235.379 56.5 220C41.2548 204.621 33.3898 184.749 33.3898 163H0Z"/>
+      </svg>
+    </button>
+
+
+    <script>
+        // Get DOM elements
+      const startBtn = document.getElementById('startBtn');
+      const output = document.getElementById('output');
+
+      // Create a SpeechRecognition object
+      const recognition = new webkitSpeechRecognition(); // For Chrome-based browsers
+      // For Firefox, use: new SpeechRecognition();
+
+      // Set properties for recognition
+      recognition.continuous = true;
+
+      recognition.lang = 'en-US'; // Set the language for speech recognition
+      recognition.energyThershold= 100; //set the energy threshold
+
+      // Event listener for the Start Listening button
+      startBtn.addEventListener('click', () => {
+          recognition.start();
+          output.textContent = 'Listening... Speak something.';
+      });
+
+      // Event listener for recognition result
+      recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          output.textContent = transcript;
+          setTimeout(search(output.textContent),2000);
+        };
+
+      function search(word){
+        window.open("https://www.google.com/search?q="+word);
+      }
+
+        console.log(setTimeout(window.open("https://www.google.com/search?q="+output.textContent),9000));
+      //opens a new windows and the output by the speech recognition
+
+      // Event listener for recognition errors
+      recognition.onerror = (event) => {
+          output.textContent = 'Error: ' + event.error;
+      };
+
+    </script>
+  </body>
+</html>
